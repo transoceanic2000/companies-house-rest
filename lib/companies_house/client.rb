@@ -109,7 +109,7 @@ module CompaniesHouse
         resource: :advanced_company_search,
         path: "advanced-search/companies",
         params: {
-          query.slice(*ADVANCED_SEARCH_PARAMS),
+          query: slice(*ADVANCED_SEARCH_PARAMS),
           start_index: start_index,
           size: size
         }.compact,
