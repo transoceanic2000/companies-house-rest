@@ -12,6 +12,20 @@ module CompaniesHouse
   # Specifically, it manages the connections and arranges requests.
   class Client
     ENDPOINT = "https://api.companieshouse.gov.uk"
+    
+    ADVANCED_SEARCH_PARAMS = %i{
+                                 company_name_includes
+                                 company_name_excludes
+                                 company_status
+                                 company_subtype
+                                 company_type
+                                 dissolved_from
+                                 dissolved_to
+                                 incorporated_from
+                                 incorporated_to
+                                 location
+                                 sic_codes
+                               }.freeze
 
     attr_reader :api_key, :endpoint, :instrumentation
 
@@ -86,6 +100,18 @@ module CompaniesHouse
         path: "search/companies",
         params: {
           q: query, items_per_page: items_per_page, start_index: start_index
+        }.compact,
+      )
+    end
+    
+    def advanced_company_search(start_index: nil, size: nil, **query)
+      request(
+        resource: :advanced_company_search,
+        path: "advanced-search/companies",
+        params: {
+          query.slice(*ADVANCED_SEARCH_PARAMS),
+          start_index: start_index,
+          size: size
         }.compact,
       )
     end
